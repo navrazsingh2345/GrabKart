@@ -2,17 +2,29 @@ import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { useAppContext } from '../context/AppContext.jsx'
+import toast from 'react-hot-toast'
 
 
 const Navbar = () => {
 const [open, setOpen] = React.useState(false) //to show and hide the mobile menu icon
 
-const { user, setUser, setShowUserLogin, navigate, setSearchQuery, searchQuery ,getCartCount} = useAppContext();
+const { user, setUser, setShowUserLogin, navigate, setSearchQuery, searchQuery ,getCartCount , axios} = useAppContext();
 
 //logout func
 const logout = async () => {
-    setUser(null);
-    navigate('/')
+    try {
+        const {data} = await axios.get('/api/user/logout');
+        if(data.success){
+            toast.success(data.message);
+            setUser(null);
+            navigate('/')
+        } else{
+            toast.error(data.message);
+        }
+    } catch (error) {
+        toast.error(error.message);
+    }
+    
 }
 
 useEffect(()=>{

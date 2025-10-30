@@ -15,8 +15,13 @@ const Cart = () => {
         let tempArray = []
         for(const key in cartItems){
             const product = products.find((item)=>(item._id===key))
-            product.quantity = cartItems[key]
-            tempArray.push(product)
+            console.log("Found product for cart:", product);
+            if (product) {
+            tempArray.push({
+                ...product,
+                quantity: cartItems[key]
+            });
+        }
         }
         setCartArray(tempArray)
     }
@@ -45,7 +50,7 @@ const Cart = () => {
                 </div>
 
                 {cartArray.map((product, index) => (
-                    <div key={index} className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3">
+                    <div key={product._id} className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3">
                         <div className="flex items-center md:gap-6 gap-3">
                             <div onClick={()=>{
                                 navigate(`/products/${product.category.toLowerCase()}/${product._id}`); scrollTo(0,0)
@@ -97,7 +102,7 @@ const Cart = () => {
                         </button>
                         {showAddress && (
                             <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                                { addresses.map((address,index)=>(<p onClick={() => {setSelectedAddress(address); setShowAddress(false)}} className="text-gray-500 p-2 hover:bg-gray-100">
+                                { addresses.map((address,index)=>(<p      key={index} onClick={() => {setSelectedAddress(address); setShowAddress(false)}} className="text-gray-500 p-2 hover:bg-gray-100">
                                     {address.street}, {address.city}, {address.state}, {address.country}
                                 </p>))}
                                 <p onClick={() => navigate("/add-address")} className="text-primary text-center cursor-pointer p-2 hover:bg-primary/10">

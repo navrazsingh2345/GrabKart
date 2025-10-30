@@ -21,7 +21,6 @@ return (
                 </div>
             ))}
 
-            
         </div>
     </div>
 )
